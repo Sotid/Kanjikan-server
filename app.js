@@ -10,8 +10,9 @@ const cors = require("cors");
 require("dotenv").config();
 
 const authRouter = require("./routes/auth.router");
-const usersRouter = require("./routes/users.router");
-const projectsRouter = require("./routes/projects.router");
+const lessonsRouter = require("./routes/lessons.router");
+const dictionaryRouter = require("./routes/dictionary.router");
+const myprofileRouter = require("./routes/myprofile.router");
 
 // MONGOOSE CONNECTION
 mongoose
@@ -26,7 +27,7 @@ mongoose
 // EXPRESS SERVER INSTANCE
 const app = express();
 
-// CORS MIDDLEWARE SETUP
+// // CORS MIDDLEWARE SETUP
 app.use(
   cors({
     credentials: true,
@@ -59,9 +60,9 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // ROUTER MIDDLEWARE
 app.use("/auth", authRouter);
-
-app.use("/api/users", usersRouter);
-app.use("/api/projects", projectsRouter);
+app.use("/api/lessons", lessonsRouter);
+app.use("/api/dictionary", dictionaryRouter);
+app.use("/api/myprofile", myprofileRouter);
 
 // ERROR HANDLING
 //  Catch 404 and respond with error message

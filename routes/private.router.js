@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user.model");
-const Kanji = require("../models/kanji.model");
 //GET /API/MYPROFILE/:USERID Shows user`s profile
 router.get("/:userId", (req, res, next) => {
   const userId = req.params.userId;
@@ -30,17 +29,14 @@ router.post("/:userId", (req, res, next) => {
     .catch((err) => res.status(500).json(err));
 });
 //POST /API/MYPROFILE/:KANJIID/ADD Adds a new kanji to user's bookmarks
-router.post(
-  "/:kanjiId/add",
-  function (req, res, next) {
-    const id = req.session.currentUser._id;
-    const { kanjiId } = req.params;
-    User.findByIdAndUpdate(id, { $addToSet: { bookmarks: kanjiId } })
-      .then(() => kanjiId.save)
-      .then(() => res.status(200).send())
-      .catch((err) => res.status(400).json(err));
-  }
-);
+router.post("/:kanjiId/add", function (req, res, next) {
+  const id = req.session.currentUser._id;
+  const { kanjiId } = req.params;
+  User.findByIdAndUpdate(id, { $addToSet: { bookmarks: kanjiId } })
+    .then(() => kanjiId.save)
+    .then(() => res.status(200).send())
+    .catch((err) => res.status(400).json(err));
+});
 //POST /API/MYPROFILE/:KANJIID/DELETE   Removes a bookmark from the user's array
 // The kanji is NOT REMOVED from the DB
 router.post("/:kanjiId/delete", function (req, res, next) {

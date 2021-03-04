@@ -12,7 +12,7 @@ require("dotenv").config();
 const authRouter = require("./routes/auth.router");
 const lessonsRouter = require("./routes/lessons.router");
 const dictionaryRouter = require("./routes/dictionary.router");
-const myprofileRouter = require("./routes/myprofile.router");
+const privateRouter = require("./routes/private.router");
 
 // MONGOOSE CONNECTION
 mongoose
@@ -62,7 +62,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/auth", authRouter);
 app.use("/api/lessons", lessonsRouter);
 app.use("/api/dictionary", dictionaryRouter);
-app.use("/api/myprofile", myprofileRouter);
+app.use("/api/private", privateRouter);
 
 // ERROR HANDLING
 //  Catch 404 and respond with error message

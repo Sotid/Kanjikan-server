@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const Lesson = require("../models/lesson.model");
+
+
 //GET /API/LESSONS/ Shows all lessons
 router.get("/", function (req, res, next) {
   Lesson.find()

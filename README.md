@@ -67,39 +67,28 @@ User profile:
 - Searchbar
 
 ## Services
-
 - Auth Service
 
-  - auth.login(user)
+ - auth.login(user)
+ - auth.signup(user)
+ - auth.logout()
+ - auth.me()
 
-  - auth.signup(user)
+- Lessons Service
 
-  - auth.logout()
+ - lessons.getAll()
+ - lessons.getOne(id)
+  - lessons.getOneQuiz()
 
-  - auth.me()
+- MyProfile Service
+  - myProfile.getOne(id)
+  - myProfile.editProfile(id, username, email, password)
+  - myProfile.addToBookmarks(id)
+  - myProfile.deleteFromBookmarks(id)
 
-  - auth.getUser() // synchronous
-
-    
-
-    (((((((   EXAMPLE ))))))))
-
-- Tournament Service
-
-  - tournament.list()
-  - tournament.detail(id)
-  - tournament.add(id)
-  - tournament.delete(id)
-
-- Player Service
-
-  - player.detail(id)
-  - player.add(id)
-  - player.delete(id)
-
-- Game Service
-
-  - Game.put(id)
+- Dictionary Service
+  - dictionary.getAll(id)
+  - dictionary.getSearchResults(query)
 
 
 
@@ -130,23 +119,32 @@ Kanji model
    kun_readings: [{type:String}],
    on_readings: [{type:String}],
    name_readings: [{type:String}],
+   jlpt: {type:Number},
+   unicode: {type:String},
    heisig_en:{type:String},
-   lesson: {type: Schema.Types.ObjectId,ref:'Lesson'}
-  
- }
+}
 ```
 
 Lesson model
 
 ```
 {
-  name: {type: String},
-  img: {type: String},
-  kanji: [{type: Schema.Types.ObjectId,ref:'Kanji'}],
-  }],
-  
+  name: { type: String },
+  img: { type: String },
+  kanji: [
+    { kanji: { type: String, required: true } ,
+    grade: { type: Number },
+    stroke_count: { type: Number } ,
+     meanings: { type: String } ,
+     kun_readings: { type: String } ,
+     on_readings: { type: String } ,
+     name_readings: { type: String } ,
+     heisig_en: { type: String } ,
+    }],
 }
-```
+  
+
+
 
 ## API Endpoints (backend routes)
 

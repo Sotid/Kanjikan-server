@@ -9,8 +9,9 @@ const kanjiSchema = new Schema({
    kun_readings: [{type:String}],
    on_readings: [{type:String}],
    name_readings: [{type:String}],
+   jlpt: {type:Number},
+   unicode: {type:String},
    heisig_en:{type:String},
-   lesson: {type: Schema.Types.ObjectId,ref:'Lesson'}
 });
 
 

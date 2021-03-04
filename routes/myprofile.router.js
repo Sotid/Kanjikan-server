@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require("../models/user.model");
 
 //Shows user`s profile
-router.get("/:userId", function (req, res, next) {
+router.get("/:userId",  (req, res, next) => {
   const userId = req.params.userId;
 
   User.findById(userId)
@@ -17,20 +17,18 @@ router.get("/:userId", function (req, res, next) {
 });
 
 //Edit user`s profile
-router.put("/:userId", (req, res, next) => {
-  const {userId}  = req.params;
-  const { username, email, password } = req.body;
-  
+router.put("/:userId",  (req, res, next) => {
+  const userId = req.params.userId
+  const { username, email, password, lessonsCompleted, bookmarks  } = req.body;
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     res.status(400).json({ message: "Not a valid ID" });
-
     return;
   }
 
-  User.findByIdAndUpdate(userId, { username, email, password })
-    console.log(userId)
+  User.findByIdAndUpdate(userId, { username, email, password, lessonsCompleted, bookmarks })
   
   .then(() => res.status(200).send())
+
     .catch((err) => res.status(500).json(err));
 });
 

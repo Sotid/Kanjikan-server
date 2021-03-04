@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
+const Lesson = require("../models/lesson.model");
+
 
 //Renders all the available lessons
-router.get("/lessons", function (req, res, next) {
+router.get("/", function (req, res, next) {
      
         Lesson.find()
         .then( (allTheLessons) => {
@@ -17,7 +19,7 @@ router.get("/lessons", function (req, res, next) {
 
 
 //Renders the cards of each lesson
-router.get("/lessons/:id", (req, res) => {
+router.get("/:id", (req, res) => {
   const { id } = req.params;
 
   if ( !mongoose.Types.ObjectId.isValid(id)) {

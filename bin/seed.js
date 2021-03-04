@@ -19,14 +19,14 @@ const lesson= [
         heisig_en: "right"
       },
       {
-        "kanji": "雨",
-        "grade": 1,
-        "stroke_count": 8,
-        "meanings": "rain",
-        "kun_readings": "あめ, あま-, -さめ",
-        "on_readings": "ウ",
-        "name_readings": "",
-        "heisig_en": "rain"
+        kanji: "雨",
+        grade: 1,
+        stroke_count: 8,
+        meanings: "rain",
+        kun_readings: "あめ, あま-, -さめ",
+        on_readings: "ウ",
+        name_readings: "",
+        heisig_en: "rain"
       },
       {
         "kanji": "円",
@@ -904,24 +904,23 @@ const lesson= [
             ]               
   
 
-              mongoose
-              .connect(process.env.MONGODB_URI, {
-                  useNewUrlParser: true,
-                  useUnifiedTopology: true,
-                })
-              .then((x) => {
-              const pr = x.connection.dropDatabase();
-              return pr;
-            })
-            .then((lesson) => {
-              const pr = Lesson.create(lesson);
-              return pr;
-            })
-              .then((createdLessons) => {
-                mongoose.connection.close();
-            })
-            .catch( (err) => console.log('Error connection to the DB', err));
-          
+            mongoose
+            .connect(process.env.MONGODB_URI, {
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
+              })
+            .then((x) => {
+            const pr = x.connection.dropDatabase();
+            return pr;
+          })
+          .then(() => {
+            const pr = Lesson.create(lesson);
+            return pr;
+          })
+            .then((createdLessons) => {
+              mongoose.connection.close();
+          })
+          .catch( (err) => console.log('Error connection to the DB', err));
           
           
           

@@ -6,7 +6,7 @@ const Kanji = require("../models/kanji.model");
 // Shows the dictionary
 router.get("/", (req, res, next) => {
   Kanji.find({grade:1})
-    .limit(30)
+    
     .then((allKanjis) => {
       res.status(200).json(allKanjis);
     })
@@ -32,8 +32,8 @@ router.get("/", (req, res, next) => {
 
 // });
 
-router.get("/search", (req, res, next) => {
-  const searchKanji = req.query.meanings;
+router.get("/", (req, res, next) => {
+  const searchKanji = req.query.search;
   Kanji.find({ meanings: { searchKanji } })
     .then((found) => {
       res.status(200).json(found);

@@ -52,7 +52,7 @@ router.post('/login', isNotLoggedIn, validateAuthData, async (req, res, next) =>
   try {
     const { username, password } = req.body;
     
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ username }). populate("bookmarks")
     if (!user) return next(createError(404));  // Bad Request
 
     const passwordCorrect = await bcrypt.compare(password, user.password);

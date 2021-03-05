@@ -4,7 +4,7 @@ const User = require("../models/user.model");
 //GET /API/MYPROFILE/:USERID Shows user`s profile
 router.get("/:userId", (req, res, next) => {
   const userId = req.params.userId;
-  User.findById(userId)
+  User.findById(userId).populate("bookmarks")
     .then((thisUser) => {
       res.status(200).json(thisUser);
     })
@@ -16,10 +16,10 @@ router.get("/:userId", (req, res, next) => {
 router.post("/:userId", (req, res, next) => {
   const userId = req.params.userId;
   const { username, email, password } = req.body;
-  if (!mongoose.Types.ObjectId.isValid(userId)) {
-    res.status(400).json({ message: "Not a valid ID" });
-    return;
-  }
+  // if (!mongoose.Types.ObjectId.isValid(userId)) {
+  //   res.status(400).json({ message: "Not a valid ID" });
+  //   return;
+  // }
   User.findByIdAndUpdate(userId, {
     username,
     email,

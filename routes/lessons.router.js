@@ -16,10 +16,7 @@ router.get("/", function (req, res, next) {
 //GET /API/LESSONS/:LESSONID Shows kanji in the selected lesson
 router.get("/:id", (req, res) => {
   const { id } = req.params;
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    res.status(400).json({ message: "Not a valid ID" });
-    return;
-  }
+  
   Lesson.findById(id)
     .then((foundLesson) => {
       res.status(200).json(foundLesson);

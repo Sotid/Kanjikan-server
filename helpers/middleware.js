@@ -9,7 +9,7 @@ exports.isLoggedIn = (req, res, next) => {
 exports.isNotLoggedIn = (req, res, next) => {
   // Check if the user request came without a cookie and isn't logged in
   if ( ! req.session.currentUser ) next();
-  else next( createError(403) );   // new Error({message: '', statusCode: 403})
+  else next( createError(403) );   
 };
 
 exports.validateAuthData = (req, res, next) => {

@@ -65,8 +65,7 @@ app.use("/api/dictionary", dictionaryRouter);
 app.use("/api/private", privateRouter);
 
 // ERROR HANDLING
-//  Catch 404 and respond with error message
-// Shows a 404 error with a message when no route is found for the request
+
 app.use((req, res, next) => {
   res.status(404).json({ code: "not found" });
 });

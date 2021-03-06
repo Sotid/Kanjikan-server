@@ -12,14 +12,12 @@ router.get("/:userId", (req, res, next) => {
       res.status(500).json(err);
     });
 });
+
 //POST /API/MYPROFILE/:USERID updates user's personal information
 router.post("/:userId", (req, res, next) => {
   const userId = req.params.userId;
   const { username, email, password } = req.body;
-  // if (!mongoose.Types.ObjectId.isValid(userId)) {
-  //   res.status(400).json({ message: "Not a valid ID" });
-  //   return;
-  // }
+
   User.findByIdAndUpdate(userId, {
     username,
     email,
@@ -28,15 +26,17 @@ router.post("/:userId", (req, res, next) => {
     .then(() => res.status(200).send())
     .catch((err) => res.status(500).json(err));
 });
+
 //POST /API/MYPROFILE/:KANJIID/ADD Adds a new kanji to user's bookmarks
 router.post("/:kanjiId/add", function (req, res, next) {
   const id = req.session.currentUser._id;
   const { kanjiId } = req.params;
-  User.findByIdAndUpdate(id, { $addToSet: { bookmarks: kanjiId } })
+  User.findByIdAndUpdate(id, { $addToSet: { bookmarks: kanjiId} }, {new:true})
     .then(() => kanjiId.save)
     .then(() => res.status(200).send())
     .catch((err) => res.status(400).json(err));
 });
+
 //POST /API/MYPROFILE/:KANJIID/DELETE   Removes a bookmark from the user's array
 // The kanji is NOT REMOVED from the DB
 router.post("/:kanjiId/delete", function (req, res, next) {
@@ -46,5 +46,7 @@ router.post("/:kanjiId/delete", function (req, res, next) {
     .then(() => res.status(200).send())
     .catch((err) => res.status(404).json(err));
 });
+
+
 
 module.exports = router;

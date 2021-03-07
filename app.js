@@ -14,7 +14,6 @@ const lessonsRouter = require("./routes/lessons.router");
 const dictionaryRouter = require("./routes/dictionary.router");
 const privateRouter = require("./routes/private.router");
 const resourcesRouter = require("./routes/resources.router");
-// const translateRouter = require("./routes/translate.router");
 
 // MONGOOSE CONNECTION
 mongoose

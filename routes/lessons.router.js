@@ -48,7 +48,6 @@ router.post("/:lessonId/quiz", function (req, res, next) {
     .catch((err) => res.status(404).json(err));
 });
 
-//GET /API/LESSONS/:LESSONID/QUIZ/RESULTS Shows results
-//to determine if back or front
+
 
 module.exports = router;

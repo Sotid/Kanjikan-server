@@ -4,7 +4,8 @@ const User = require("../models/user.model");
 //GET /API/MYPROFILE/:USERID Shows user`s profile
 router.get("/:userId", (req, res, next) => {
   const userId = req.params.userId;
-  User.findById(userId).populate("bookmarks")
+  User.findById(userId)
+    .populate("bookmarks")
     .then((thisUser) => {
       res.status(200).json(thisUser);
     })
@@ -28,11 +29,14 @@ router.post("/:userId", (req, res, next) => {
 });
 
 //POST /API/MYPROFILE/:KANJIID/ADD Adds a new kanji to user's bookmarks
-router.post("/:kanjiId/add", function (req, res, next) {
-  const id = req.session.currentUser._id;
+router.post("/add/:kanjiId", function (req, res, next) {
+  const { id } = req.body;
   const { kanjiId } = req.params;
-  User.findByIdAndUpdate(id, { $addToSet: { bookmarks: kanjiId} }, {new:true})
-    .then(() => kanjiId.save)
+  User.findByIdAndUpdate(
+    id,
+    { $addToSet: { bookmarks: kanjiId } },
+    { new: true }
+  )
     .then(() => res.status(200).send())
     .catch((err) => res.status(400).json(err));
 });
@@ -46,9 +50,5 @@ router.post("/:kanjiId/delete", function (req, res, next) {
     .then(() => res.status(200).send())
     .catch((err) => res.status(404).json(err));
 });
-
-
-
-
 
 module.exports = router;

@@ -1,5 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
+
 const User = require("../models/user.model");
 //GET /API/MYPROFILE/:USERID Shows user`s profile
 router.get("/:userId", (req, res, next) => {
@@ -15,13 +18,18 @@ router.get("/:userId", (req, res, next) => {
 });
 
 //POST /API/MYPROFILE/:USERID updates user's personal information
-router.post("/:userId/edit", (req, res, next) => {
+router.post("/:userId/edit", async (req, res, next) => {
   const userId = req.params.userId;
   const { username, email, password } = req.body;
+
+  // hash the new password
+  const salt = await bcrypt.genSalt(saltRounds);
+  const hashPass = await bcrypt.hash(password, salt);
+
   User.findByIdAndUpdate(userId, {
     username,
     email,
-    password,
+    password: hashPass,
   })
     .then(() => res.status(200).send())
     .catch((err) => res.status(500).json(err));

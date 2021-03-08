@@ -15,10 +15,9 @@ router.get("/:userId", (req, res, next) => {
 });
 
 //POST /API/MYPROFILE/:USERID updates user's personal information
-router.post("/:userId", (req, res, next) => {
+router.post("/:userId/edit", (req, res, next) => {
   const userId = req.params.userId;
   const { username, email, password } = req.body;
-
   User.findByIdAndUpdate(userId, {
     username,
     email,
@@ -27,7 +26,6 @@ router.post("/:userId", (req, res, next) => {
     .then(() => res.status(200).send())
     .catch((err) => res.status(500).json(err));
 });
-
 //POST /API/MYPROFILE/:KANJIID/ADD Adds a new kanji to user's bookmarks
 router.post("/add/:kanjiId", function (req, res, next) {
   const { id } = req.body;

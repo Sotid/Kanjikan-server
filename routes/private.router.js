@@ -37,10 +37,12 @@ router.post("/:userId/edit", async (req, res, next) => {
 //POST /API/MYPROFILE/:KANJIID/ADD Adds a new kanji to user's bookmarks
 router.post("/add/:kanjiId", function (req, res, next) {
   const { userId } = req.body;
-   const { kanjiId } = req.params
-  
-  User.findByIdAndUpdate( userId,
-    { $addToSet: { bookmarks: kanjiId } }
+
+  const { kanjiId } = req.params;
+  User.findByIdAndUpdate(
+    userId,
+    { $addToSet: { bookmarks: kanjiId } },
+    { new: true }
   )
     .then((data) => res.status(200).send(data))
     .catch((err) => res.status(400).json(err));
@@ -50,8 +52,8 @@ router.post("/add/:kanjiId", function (req, res, next) {
 // The kanji is NOT REMOVED from the DB
 router.post("/delete/:kanjiId", function (req, res, next) {
   const { userId } = req.body;
-  const { kanjiId } = req.params
-  console.log(req.params)
+  const { kanjiId } = req.params;
+  console.log(req.params);
 
   User.findByIdAndUpdate(userId, { $pull: { bookmarks: kanjiId } })
     .then(() => res.status(200).send(data))

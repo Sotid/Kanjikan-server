@@ -94,6 +94,7 @@ router.get("/logout", isLoggedIn, (req, res, next) => {
 });
 
 // GET '/auth/me'
+
 router.get("/me", isLoggedIn, (req, res, next) => {
 
   const { _id } = req.session.currentUser;

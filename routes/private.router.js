@@ -37,8 +37,9 @@ router.post("/:userId/edit", async (req, res, next) => {
 //POST /API/MYPROFILE/:KANJIID/ADD Adds a new kanji to user's bookmarks
 router.post("/add/:kanjiId", function (req, res, next) {
   const { id } = req.body;
-  
-  const { kanjiId } = req.params;
+  Object.values(kanjiId.kanjiId) = kanjiId
+   const { kanjiId } = req.params
+  console.log(req.params)
   User.findByIdAndUpdate(
     { $addToSet: { bookmarks: kanjiId } },
     { new: true }

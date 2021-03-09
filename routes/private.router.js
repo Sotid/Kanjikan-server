@@ -36,26 +36,25 @@ router.post("/:userId/edit", async (req, res, next) => {
 });
 //POST /API/MYPROFILE/:KANJIID/ADD Adds a new kanji to user's bookmarks
 router.post("/add/:kanjiId", function (req, res, next) {
-  const { id } = req.body;
-  Object.values(kanjiId.kanjiId) = kanjiId
+  const { userId } = req.body;
    const { kanjiId } = req.params
-  console.log(req.params)
-  User.findByIdAndUpdate(
-    { $addToSet: { bookmarks: kanjiId } },
-    { new: true }
+  
+  User.findByIdAndUpdate( userId,
+    { $addToSet: { bookmarks: kanjiId } }
   )
-    .then(() => res.status(200).send())
+    .then((data) => res.status(200).send(data))
     .catch((err) => res.status(400).json(err));
 });
 
 //POST /API/MYPROFILE/:KANJIID/DELETE   Removes a bookmark from the user's array
 // The kanji is NOT REMOVED from the DB
-router.post("/:kanjiId/delete", function (req, res, next) {
-  const id = req.session.currentUser._id;
-  const { kanjiId } = req.params;
+router.post("/delete/:kanjiId", function (req, res, next) {
+  const { userId } = req.body;
+  const { kanjiId } = req.params
   console.log(req.params)
-  User.findByIdAndUpdate(id, { $pull: { bookmarks: kanjiId } })
-    .then(() => res.status(200).send())
+
+  User.findByIdAndUpdate(userId, { $pull: { bookmarks: kanjiId } })
+    .then(() => res.status(200).send(data))
     .catch((err) => res.status(404).json(err));
 });
 

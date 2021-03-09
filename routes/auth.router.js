@@ -62,7 +62,7 @@ router.post(
     try {
       const { username, password } = req.body;
 
-      const user = await User.findOne({ username }).populate("bookmarks");
+      const user = await User.findOne({ username });
       if (!user) return next(createError(404)); // Bad Request
 
       const passwordCorrect = await bcrypt.compare(password, user.password);
@@ -95,9 +95,12 @@ router.get("/logout", isLoggedIn, (req, res, next) => {
 
 // GET '/auth/me'
 router.get("/me", isLoggedIn, (req, res, next) => {
-  const currentUserData = req.session.currentUser;
 
-  res.status(200).json(currentUserData);
+  const { _id } = req.session.currentUser;
+  User.findById(_id)
+  .populate("bookmarks")
+  .then(data => res.status(200).json(data))
+.catch(err => res.status(404).json(err));
 });
 
 module.exports = router;

@@ -32,7 +32,9 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    origin: [process.env.PUBLIC_DOMAIN],
+    origin: [process.env.PUBLIC_DOMAIN,
+      'http://kanjikan.herokuapp.com',        
+      'https://kanjikan.herokuapp.com'   ],
   })
 );
 
@@ -65,6 +67,12 @@ app.use("/api/lessons", lessonsRouter);
 app.use("/api/dictionary", dictionaryRouter);
 app.use("/api/private", privateRouter);
 app.use("api/resources", resourcesRouter);
+
+// ROUTE FOR SERVING REACT APP (index.html)
+app.use((req, res, next) => {
+  // If no previous routes match the request, send back the React app.
+  res.sendFile(__dirname + "/public/index.html");
+});
 
 // ERROR HANDLING
 

@@ -1,9 +1,7 @@
 const express = require("express");
 const router = express.Router();
-
 const createError = require("http-errors");
 const bcrypt = require("bcrypt");
-
 const saltRounds = 10;
 const User = require("../models/user.model");
 const Kanji = require("../models/kanji.model");
@@ -73,10 +71,10 @@ router.post(
 
         res.status(200).json(user);
       } else {
-        next(createError(401)); // Unauthorized
+        next(createError(401));
       }
     } catch (error) {
-      next(createError(error)); // 500 Internal Server Error (by default)
+      next(createError(error));
     }
   }
 );
@@ -96,12 +94,11 @@ router.get("/logout", isLoggedIn, (req, res, next) => {
 // GET '/auth/me'
 
 router.get("/me", isLoggedIn, (req, res, next) => {
-
   const { _id } = req.session.currentUser;
   User.findById(_id)
-  .populate("bookmarks")
-  .then(data => res.status(200).json(data))
-.catch(err => res.status(404).json(err));
+    .populate("bookmarks")
+    .then((data) => res.status(200).json(data))
+    .catch((err) => res.status(404).json(err));
 });
 
 module.exports = router;

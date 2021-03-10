@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
 const User = require("../models/user.model");
+const Kanji = require("../models/kanji.model");
 //GET /API/MYPROFILE/:USERID Shows user`s profile
 router.get("/:userId", (req, res, next) => {
   const userId = req.params.userId;
@@ -37,7 +38,11 @@ router.post("/:userId/edit", async (req, res, next) => {
 //POST /API/MYPROFILE/:KANJIID/ADD Adds a new kanji to user's bookmarks
 router.post("/add/:kanjiId", function (req, res, next) {
   const { userId } = req.body;
+<<<<<<< HEAD
 
+=======
+  console.log(req.body, "Add")
+>>>>>>> 4b1b64f2d9b1f20ca6c89b08e2c29a94631f3f77
   const { kanjiId } = req.params;
   User.findByIdAndUpdate(
     userId,
@@ -51,12 +56,27 @@ router.post("/add/:kanjiId", function (req, res, next) {
 //POST /API/MYPROFILE/:KANJIID/DELETE   Removes a bookmark from the user's array
 // The kanji is NOT REMOVED from the DB
 router.post("/delete/:kanjiId", function (req, res, next) {
+<<<<<<< HEAD
   const { userId } = req.body;
   const { kanjiId } = req.params;
   console.log(req.params);
 
   User.findByIdAndUpdate(userId, { $pull: { bookmarks: kanjiId } })
     .then(() => res.status(200).send(data))
+=======
+
+  const {userId}  = req.body;
+  
+  console.log(userId, "user")
+
+ const { kanjiId } = req.params
+console.log(kanjiId, "kanjiId", userId, "userId")
+ 
+  
+ 
+  User.findByIdAndUpdate(userId, { $pull: { bookmarks: kanjiId }}, { new: true })
+    .then((data) => res.status(200).json(data))
+>>>>>>> 4b1b64f2d9b1f20ca6c89b08e2c29a94631f3f77
     .catch((err) => res.status(404).json(err));
 });
 

@@ -4,7 +4,7 @@
 
 ## Description
 
-This is an app to learn basic Kanji (logographic Japanese characters) and keep track of the lessons completed.
+This is an app to learn basic Kanji (logographic Japanese characters), search for unknown words and perform a quiz to test your knowledge
 
 ## User Stories
 
@@ -15,19 +15,14 @@ This is an app to learn basic Kanji (logographic Japanese characters) and keep t
 - **Add to bookmarks** As a user I can add a kanji to my bookmarks so I can read it again later
 - **Delete from bookmarks** As a user I can delete a kanji from my list
 - **Edit my profile** As a user I can edit my profile
-- **View Completed lessons** As a user I can see the lessons I've already done
 - **Search** as I user I can search for an English word and receive the translation in Japanese
+- **Other resources** as a user i can access other external learning resources
 
 ## Backlog
 
-User profile:
-
-- see my profile
-- change tournament mode to FFA
-- Add weather widget
-- lottie interactions
-- users can bet
-- add geolocation to events when creating
+- Create one quiz for every lesson
+- Keep track of completed lessons
+- Refactor code with Redux and hooks
 
 
 
@@ -35,17 +30,20 @@ User profile:
 
 ## React Router Routes (React App)
 
-| Path                       | Component           | Permissions                | Behavior                                                     |
-| -------------------------- | ------------------- | -------------------------- | ------------------------------------------------------------ |
-| `/signup`                  | SignupPage          | anon only `<AnonRoute>`    | Signup form, link to login, navigate to homepage after signup |
-| `/login`                   | LoginPage           | anon only `<AnonRoute>`    | Login form, link to signup, navigate to homepage after login |
-| `/lessons`                 | LessonsListPage     | user only `<PrivateRoute>` | Shows all lessons                                            |
-| `/lessons/kanji/:id`       | KanjiDetailPage     | user only `<PrivateRoute>` | Shows current step of the lesson                             |
-| `/lesson/:id/quiz`         | QuizPage            | user only `<PrivateRoute>` | Shows quiz                                                   |
-| `/lesson/:id/quiz/results` | LessonCompletedPage | user only `<PrivateRoute>` | Shows lesson completion                                      |
-| `/myprofile`               | ProfilePage         | user only `<PrivateRoute>` | Shows personal information and list of bookmarks             |
-| `/search-results`          | SearchResultsPage   | user only `<PrivateRoute>` | Shows results of search                                      |
-|                            |                     |                            |                                                              |
+| Path                    | Component       | Permissions                | Behavior                                                     |
+| ----------------------- | --------------- | -------------------------- | ------------------------------------------------------------ |
+| `/signup`               | SignupPage      | anon only `<AnonRoute>`    | Signup form, link to login, navigate to homepage after signup |
+| `/login`                | LoginPage       | anon only `<AnonRoute>`    | Login form, link to signup, navigate to homepage after login |
+| `/logout`               | Logout          | user only `<PrivateRoute>` | Destroys current session. Redirects to LoginPage             |
+| `/lessons`              | LessonsListPage | user only `<PrivateRoute>` | Shows all lessons                                            |
+| `/lessons/:id`          | KanjiDetailPage | user only `<PrivateRoute>` | Shows details  of every lesson                               |
+| `/quiz`                 | QuizPage        | user only `<PrivateRoute>` | Shows quiz                                                   |
+| `/private/:userId`      | ProfilePage     | user only `<PrivateRoute>` | Shows personal information and list of bookmarks             |
+| `/private/add/:kanjiId` | Bookmarks       | user only `<PrivateRoute>` | Adds an element to user's bookmarks                          |
+| `/private/add/:kanjiId` | DeleteBookmarks | user only `<PrivateRoute>` | Removes  an element from user's bookmarks                    |
+| `/private/:userId/edit` | EditPage        | user only `<PrivateRoute>` | Allows user to change personal data                          |
+| `/dictionary`           | DictionaryPage  | user only `<PrivateRoute>` | Shows results of search                                      |
+|                         |                 |                            |                                                              |
 
 ## Pages
 
@@ -53,42 +51,52 @@ User profile:
 - SignupPage
 - LessonsListPage
 - KanjiDetailPage
-- QuizzPage
-- LessonCompletedPage
-- ProfilePage
-- SearchPage
+- QuizPage
+- PrivatePage
+- DictionaryPage
 
 ## Components
 
-- KanjiCard
-- Lesson   
-- Bookmarks
+- Blogs
+- EditProfile
+- Music
 - Navbar
-- Searchbar
+- News
+- PrivateRoute
+- Quiz
+- Syllabaries
+- Videos
 
 ## Services
 - Auth Service
 
- - auth.login(user)
- - auth.signup(user)
- - auth.logout()
- - auth.me()
+  auth.login(user)
+
+  auth.signup(user)
+
+  auth.logout()
+
+  auth.me()
 
 - Lessons Service
 
- - lessons.getAll()
- - lessons.getOne(id)
-  - lessons.getOneQuiz()
+  lessons.getAllLessons()
 
-- MyProfile Service
-  - myProfile.getOne(id)
-  - myProfile.editProfile(id, username, email, password)
-  - myProfile.addToBookmarks(id)
-  - myProfile.deleteFromBookmarks(id)
+  lessons.getOneLesson(id)
+
+- Private Service
+
+  private.getOneUser(username, password, email, bookmarks,  lessonsCompleted, userId)
+
+  private.editProfile(username, email, password, userId)
+
+  private.addToBookmarks(kanjiId, userId)
+
+  private.deleteFromBookmarks(kanjiId, userId) 
 
 - Dictionary Service
-  - dictionary.getAll(id)
-  - dictionary.getSearchResults(query)
+
+  dictionary.getSearchResults()
 
 
 
@@ -145,27 +153,25 @@ Lesson model
   
 
 
+```
+
+
 
 ## API Endpoints (backend routes)
 
-| HTTP Method | URL                                 | Request Body                | Success status | Error Status | Description                                                  |
-| ----------- | ----------------------------------- | --------------------------- | -------------- | ------------ | ------------------------------------------------------------ |
-| POST        | `/auth/signup`                      | {username, email, password} | 201            | 404          | Checks if fields not empty and user not exists, then create user with encrypted password, and store user in session |
-| POST        | `/auth/login`                       | {username, password}        | 200            | 401          | Checks if fields not empty, if user exists and if password matches. Then stores user in session |
-| GET         | `/auth/logout`                      | (empty)                     | 204            | 400          | Logs out the user                                            |
-| GET         | /auth/me                            | (empty)                     | 200            | 401          | Gets current user data                                       |
-| GET         | `/api/lessons`                      |                             | 200            | 500          | Show all lessons                                             |
-| GET         | `/api/lessons/:id`                  | {id}                        | 200            | 500          | Show specific kanji in a lesson **AND START THE CARDS**      |
-|             |                                     |                             |                |              |                                                              |
-| **GET**     | **`/api/lesson/:id/quiz`**          | **{id}**                    | **200**        | **400**      | **shows quiz**                                               |
-| **GET**     | **`api/lesson/:id/quiz/results`**   | **{id}**                    |                |              | **shows results of the completed quiz**                      |
-| GET         | `/api/dictionary`                   |                             | 200            | 404          | shows dictionary page                                        |
-| GET         | /api/dictionary/search[?q=str]      |                             | 200            | 404          | sends results of search                                      |
-| GET         | /api/myprofile                      |                             | 200            | 500          | shows user`s profile                                         |
-| PUT         | /api/myprofile/edit/:id             |                             |                |              |                                                              |
-| **DELETE**  | **`/api/myprofile/kanjiId/delete`** | **Saved session**           | **200**        | **404**      | **Deletes user's bookmar**k                                  |
-| **POST**    | **/api/myprofile/:kanjiId/add**     | **{id}**                    | **200**        | **400**      | **Adds current kanji to user's bookmarks**                   |
-|             |                                     |                             |                |              |                                                              |
+| HTTP Method | URL                            | Request Body                | Success status | Error Status | Description                                                  |
+| ----------- | ------------------------------ | --------------------------- | -------------- | ------------ | ------------------------------------------------------------ |
+| POST        | `/auth/signup`                 | {username, email, password} | 201            | 404          | Checks if fields not empty and user not exists, then create user with encrypted password, and store user in session |
+| POST        | `/auth/login`                  | {username, password}        | 200            | 401          | Checks if fields not empty, if user exists and if password matches. Then stores user in session |
+| GET         | `/auth/logout`                 | (empty)                     | 204            | 400          | Logs out the user                                            |
+| GET         | `/auth/me`                     | (empty)                     | 200            | 401          | Gets current user data                                       |
+| GET         | `/api/lessons`                 |                             | 200            | 500          | Show all lessons                                             |
+| GET         | `/api/lessons/:id`             | {id}                        | 200            | 500          | Show specific kanji in a lesson **AND START THE CARDS**      |
+| POST        | `/api/dictionary`              |                             | 200            | 500          | shows dictionary page and search results                     |
+| GET         | `/api/private/:userId`         |                             | 200            | 500          | shows user`s profile                                         |
+| POST        | `/api/private/:userId/edit`    |                             |                |              |                                                              |
+| POST        | `/api/private/add/:kanjiId`    |                             | 200            | 400          | Deletes user's bookmarks                                     |
+| POST        | `/api/private/delete/:kanjiId` |                             | 200            | 404          | Deletes user's bookmarks                                     |
 
 
 
@@ -189,4 +195,4 @@ The url to your repository and to your deployed project
 
 The url to your presentation slides
 
-[Slides Link](
+https://docs.google.com/presentation/d/1CwqboN1i7-AwVykqJz4n9FJ2gjbNklMmVvTU8FbfuII/edit#slide=id.gc45eab6dfd_0_0

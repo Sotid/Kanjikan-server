@@ -25,27 +25,8 @@ router.get("/:id", (req, res) => {
     });
 });
 
-//GET /API/LESSONS/:LESSONID/QUIZ Shows kanji in the selected lesson
-//test
-router.get("/:id/quiz", (req, res) => {
-  const { id } = req.params;
 
-  Lesson.findById(id)
-    .then((foundLesson) => {
-      res.status(201).json(foundLesson);
-    })
-    .catch((err) => {
-      res.status(500).json(err);
-    });
-});
 
-//POST /API/LESSONS/:LESSONID/QUIZ Sends responses to the quiz
-router.post("/:lessonId/quiz", function (req, res, next) {
-  const id = req.session.currentUser._id;
-  const { lessonId } = req.params;
-  User.findByIdAndUpdate(id, { $addToSet: { lessonsCompleted: lessonId } })
-    .then(() => res.status(200).send())
-    .catch((err) => res.status(404).json(err));
-});
+
 
 module.exports = router;

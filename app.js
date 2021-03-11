@@ -13,6 +13,7 @@ const authRouter = require("./routes/auth.router");
 const lessonsRouter = require("./routes/lessons.router");
 const dictionaryRouter = require("./routes/dictionary.router");
 const privateRouter = require("./routes/private.router");
+const proxyRouter = require("./routes/proxy.router")
 
 // MONGOOSE CONNECTION
 mongoose
@@ -67,6 +68,7 @@ app.use("/auth", authRouter);
 app.use("/api/lessons", lessonsRouter);
 app.use("/api/dictionary", dictionaryRouter);
 app.use("/api/private", privateRouter);
+app.use("/api/proxy", proxyRouter);
 
 // ROUTE FOR SERVING REACT APP (index.html)
 app.use((req, res, next) => {

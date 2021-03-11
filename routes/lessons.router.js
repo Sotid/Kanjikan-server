@@ -12,7 +12,7 @@ router.get("/", function (req, res, next) {
       res.status(500).json(err);
     });
 });
-//GET /API/LESSONS/:LESSONID Shows kanji in the selected lesson
+//GET /API/LESSONS/:LESSONID Shows kanji in selected lesson
 router.get("/:id", (req, res) => {
   const { id } = req.params;
 
@@ -26,11 +26,13 @@ router.get("/:id", (req, res) => {
 });
 
 //GET /API/LESSONS/:LESSONID/QUIZ Shows kanji in the selected lesson
+//test
 router.get("/:id/quiz", (req, res) => {
   const { id } = req.params;
+
   Lesson.findById(id)
     .then((foundLesson) => {
-      res.status(200).json(foundLesson);
+      res.status(201).json(foundLesson);
     })
     .catch((err) => {
       res.status(500).json(err);
